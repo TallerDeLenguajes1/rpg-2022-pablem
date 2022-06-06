@@ -1,2 +1,9 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿
+var personajesENJuego = new List<Personaje>();
+Personaje nuevo; 
+for (int i = 0; i < 4; i++) {
+    nuevo = new Personaje();
+///
+//
+    personajesENJuego.Add(nuevo);
+}
