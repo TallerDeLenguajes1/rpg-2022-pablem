@@ -14,3 +14,14 @@ foreach (var persona in personajesENJuego)
     persona.mostrarDatos();
     persona.mostrarCaracteristicas();
 }
+
+
+
+static void Tipeo(string texto, int delay=50)
+{
+    foreach (var c in texto)
+    {
+        Console.Write(c);
+        System.Threading.Thread.Sleep(delay);
+    }
+}
