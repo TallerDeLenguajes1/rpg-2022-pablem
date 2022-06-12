@@ -37,9 +37,9 @@ public class Personaje
     {
         var rnd = new Random();
         Velocidad = rnd.Next(1,10); //distribucón??
-        Destreza = rnd.Next(1,5);
+        Destreza = rnd.Next(1,10); ////le subí destreza max
         Fuerza = rnd.Next(1,10);
-        Nivel = 1;
+        Nivel = rnd.Next(1,5); ////le bajé el nivel max
         Armadura = rnd.Next(1,10);
     }
     public int calcularEdad()
