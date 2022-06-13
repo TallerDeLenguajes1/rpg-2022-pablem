@@ -28,7 +28,7 @@ public class Personaje
     public void generarDatos() //No aleatorio?
     {
         var rnd = new Random();
-        Tipo = (Tipos)rnd.Next(0,8);
+        // Tipo = (Tipos)rnd.Next(0,8);
         // Edad = rnd.Next(0,109572); // Edad max = 300*365.2425 = 109572
         FechaNacimiento = DateTime.Today.AddDays(rnd.Next(-109572,0));
         Salud = 100;
@@ -39,8 +39,26 @@ public class Personaje
         Velocidad = rnd.Next(1,10); //distribucón??
         Destreza = rnd.Next(1,10); ////le subí destreza max
         Fuerza = rnd.Next(1,10);
-        Nivel = rnd.Next(1,5); ////le bajé el nivel max
+        Nivel = rnd.Next(1,4); ////le bajé el nivel max
         Armadura = rnd.Next(1,10);
+    }
+    public void Levelear()
+    {
+        string opcion;
+        Console.WriteLine("\n¿Qué mejoras elijes para {0}?",Apodo);
+        Console.WriteLine("(S)alud+10   (F)uerza+1   (V)elocidad+1");
+        opcion = Console.ReadLine().ToLower();
+        if(opcion == "f") {
+            Fuerza++;
+        } else {
+            if(opcion == "v") {
+                Velocidad++;
+            } else {
+                Salud += 10;
+                if(Salud > 100)
+                    Salud = 100;
+            }
+        }
     }
     public int calcularEdad()
     {
@@ -54,9 +72,10 @@ public class Personaje
     {
         return Armadura*Velocidad;
     }
+
     public void mostrarDatos()
     {
-        Console.WriteLine("\nDatos de "+Nombre+" (aka "+Apodo+")");
+        Console.WriteLine("\n"+Nombre);
         Console.WriteLine("\tClase: "+Tipo);
         Console.WriteLine("\tFecha de Nacimiento: "+FechaNacimiento.ToString("dd/MM/yyyy"));
         Console.WriteLine("\tEdad: "+calcularEdad()+" años");
@@ -64,7 +83,7 @@ public class Personaje
     }
     public void mostrarCaracteristicas()
     {
-        Console.WriteLine("\nCaracterísticas de "+Nombre+" (aka "+Apodo+")");
+        Console.WriteLine("\nCaracterísticas de "+Apodo);
         Console.WriteLine("\tNivel "+Nivel);
         Console.WriteLine("\tVelocidad: "+Velocidad);
         Console.WriteLine("\tDestreza: "+Destreza);
