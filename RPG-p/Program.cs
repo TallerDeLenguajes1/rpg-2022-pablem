@@ -7,15 +7,12 @@ internal class Program
         /* INICIALIZACIÓN - Generación de personajes */
         var personajesENJuego = iniciar();
 
-       
-        
 
         /* PANTALLA DE INICIO */
 
         string opcion;
         do {
             /* CARGADO DE VENCEDORES DESDE ARCHIVO */
-            var listaGanadores = cargarLista("ganadores.csv");
             Console.Clear();
             Tipeo("Bienvenido al mundo pintado de Ariamis");
             Tipeo("\nElije tu destino...");
@@ -30,7 +27,7 @@ internal class Program
             if (opcion == "e")
                 mostrarPersonajes(personajesENJuego);
             if (opcion == "v")
-                mostrarGanadores(listaGanadores);
+                mostrarGanadores(cargarLista("ganadores.csv"));
         } while (opcion != "s");
 
 
