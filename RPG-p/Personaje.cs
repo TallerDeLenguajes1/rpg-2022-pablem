@@ -25,15 +25,26 @@ public class Personaje
     public int Nivel { get => nivel; set => nivel = value; }
     public int Armadura { get => armadura; set => armadura = value; }
 
-    public void generarDatos() //No aleatorio?
+    public void GenerarDatos(ref List<string[]> nombreApodoTipo) 
     {
         var rnd = new Random();
-        // Tipo = (Tipos)rnd.Next(0,8);
-        // Edad = rnd.Next(0,109572); // Edad max = 300*365.2425 = 109572
         FechaNacimiento = DateTime.Today.AddDays(rnd.Next(-109572,0));
         Salud = 100;
+        //Generación aleatoria de una combinación Nombre + Apodo + Clase
+        if (nombreApodoTipo != null && nombreApodoTipo.Any()) {
+            int i = rnd.Next(0,nombreApodoTipo.Count-1);
+            string[] itemLista = nombreApodoTipo.ElementAt(i);
+            Nombre = itemLista[0];
+            Apodo  = itemLista[1];
+            Tipo   = (Tipos)Convert.ToInt16(itemLista[2]);
+            nombreApodoTipo.RemoveAt(i); //Quita el nombre de la lista para que no se repita
+        } else {
+            Nombre = "Anónimo";
+            Apodo  = "Anónimo";
+            Tipo   = Tipos.Marginado;
+        }
     }
-    public void generarCaracteristicas() 
+    public void GenerarCaracteristicas() 
     {
         var rnd = new Random();
         Velocidad = rnd.Next(1,10); //distribucón??
@@ -64,16 +75,16 @@ public class Personaje
     {
         return Convert.ToInt32((DateTime.Today - FechaNacimiento).Days/365.2425);
     }
-    public int poderDisparo()
+    public int PoderDisparo()
     {
         return Destreza*Fuerza*Nivel;
     }
-    public int poderDefensa()
+    public int PoderDefensa()
     {
         return Armadura*Velocidad;
     }
 
-    public void mostrarDatos()
+    public void MostrarDatos()
     {
         Console.WriteLine("\n"+Nombre);
         Console.WriteLine("\tClase: "+Tipo);
@@ -81,7 +92,7 @@ public class Personaje
         Console.WriteLine("\tEdad: "+calcularEdad()+" años");
         Console.WriteLine("\tSalud: "+Salud+"%");
     }
-    public void mostrarCaracteristicas()
+    public void MostrarCaracteristicas()
     {
         Console.WriteLine("\nCaracterísticas de "+Apodo);
         Console.WriteLine("\tNivel "+Nivel);
