@@ -1,19 +1,20 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using System.Text;
+using System.Text.Json;
 internal class Program
 {
     public static int N = 4; //Número de personajes para el torneo
     private static void Main(string[] args)
     {
         /* INICIALIZACIÓN - Generación de personajes - Api web services */
+        Console.OutputEncoding = Encoding.UTF8;
 
-        Console.Clear();
-        int op;
         do {
-            Tipeo("¿Número de personajes? (Recomendable: 2, 4 u 8)");
-            op = Convert.ToInt16(Console.ReadLine());
-        } while (op < 2 && op > 8);
-        N = op;
+            Console.Clear();
+            Tipeo("Configuración inicial: ¿Número de personajes? (Recomendable: 2, 4 u 8)");
+            try {
+                N = Convert.ToInt16(Console.ReadLine()); 
+            } catch (System.FormatException){}
+        } while (N < 2 || N > 8);
 
         List<Personaje> personajesEnJuego = GeneradorPersonajes();
 
@@ -21,13 +22,14 @@ internal class Program
         string opcion;
         do {
             Console.Clear();
-            Tipeo("Bienvenido al Mundo Pintado de Ariamis");
+            Tipeo("Bienvenido al Mundo Pintado de Ariamis "+Convert.ToString(char.ConvertFromUtf32(0x1F41C)));//U+1F41C
             Tipeo("\nNuevos participantes llegaron a la contienda:\n");
             foreach(var persona in personajesEnJuego) {
                 Console.WriteLine("\t"+persona.Nombre);
             }
             Tipeo("\n\nElije sus destinos...");
-            Console.WriteLine("\n(T)orneo   Es(C)aramuza   (E)legidos   (V)encedores   (S)alir"); ///(L)ore (?)
+            Console.WriteLine("\n(T)orneo   Es(C)aramuza   (E)legidos   (V)encedores   (S)alir");
+
             opcion = Console.ReadLine().ToLower();
             if (opcion == "t")
                 Torneo(personajesEnJuego);
@@ -150,7 +152,7 @@ internal class Program
             }
         }
 
-        /* PANTALLA SECUNDARIA: Mostrar los personajes en juego */
+        /* PANTALLA SECUNDARIA: Menu: Muestra y Modifica personajes en juego   */
 
         void MenuListarPersonajes(List<Personaje> personajes)
         {
@@ -264,7 +266,7 @@ internal class Program
             Console.ReadKey();
         }
 
-        /* GUARDAR GANADOR EN csv */
+        /* AGREGAR GANADOR EN csv */
 
         void GuardarGanadorCSV(string ruta, Personaje p)
         {
@@ -276,6 +278,8 @@ internal class Program
             sw.WriteLine(torneo+","+nombre+","+stats);
             sw.Close();
         }
+
+        /* AGREGAR GANADOR AL Json */
 
         void GuardarGanadorJson(string nombreArchivo, Personaje p) 
         {

@@ -47,7 +47,7 @@ public class Personaje
     public void GenerarCaracteristicas() 
     {
         var rnd = new Random();
-        Velocidad = rnd.Next(1,10); //distribucón??
+        Velocidad = rnd.Next(1,10); 
         Destreza = rnd.Next(1,10); ////le subí destreza max
         Fuerza = rnd.Next(1,10);
         Nivel = rnd.Next(1,4); ////le bajé el nivel max
@@ -71,7 +71,7 @@ public class Personaje
             }
         }
     }
-    public int calcularEdad()
+    public int CalcularEdad()
     {
         return Convert.ToInt32((DateTime.Today - FechaNacimiento).Days/365.2425);
     }
@@ -89,7 +89,7 @@ public class Personaje
         Console.WriteLine("\n"+Nombre+"\n");
         Console.WriteLine("\tClase: "+Tipo);
         Console.WriteLine("\tFecha de Nacimiento: "+FechaNacimiento.ToString("dd/MM/yyyy"));
-        Console.WriteLine("\tEdad: "+calcularEdad()+" años");
+        Console.WriteLine("\tEdad: "+CalcularEdad()+" años");
         Console.WriteLine("\tSalud: "+Salud+"%");
     }
     public void MostrarCaracteristicas()
