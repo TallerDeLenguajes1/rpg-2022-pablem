@@ -34,11 +34,11 @@ internal class Program
             if (opcion == "t")
                 Torneo(personajesEnJuego);
             if (opcion == "c")
-                Batalla(personajesEnJuego[0],personajesEnJuego[1]);
+                Batalla(personajesEnJuego.First(),personajesEnJuego.Last());
             if (opcion == "e")
                 MenuListarPersonajes(personajesEnJuego);
             if (opcion == "v")
-                MostrarGanadoresCsv(HelperCsv.LeerCsv("ganadores.csv",','));
+                MostrarGanadoresCsv();
         } while (opcion != "s");
 
 
@@ -47,7 +47,7 @@ internal class Program
         List<Personaje> GeneradorPersonajes()
         {
             /* Lee combinaciones Nombre-Apodo-Tipo desde archivo: "nombres.csv" */
-            List<string[]> ListaNombreApodoTipo = HelperCsv.LeerCsv("nombres.csv",',');
+            List<string[]>? ListaNombreApodoTipo = HelperCsv.LeerCsv("nombres.csv",',');
            
             /* CREACIÓN DE PERSONAJES RANDOM */
             var personajesENJuego = new List<Personaje>();
@@ -163,23 +163,16 @@ internal class Program
                 Console.WriteLine((i+1)+"/"+personajes.Count+" Personajes en Juego:");
                 personajes.ElementAt(i).MostrarDatos(); //indexOf?
                 personajes.ElementAt(i).MostrarCaracteristicas();
-                Console.WriteLine("\n(G)enerar   (C)argar   (L)isto   (enter)-->");
+                Console.WriteLine("\n(G)enerar   (R)eemplazar   (L)isto   (enter)-->");
 
                 opcion = Console.ReadLine().ToLower();
-                if(opcion == "g" || opcion == "c") 
+                if(opcion == "g" || opcion == "r") 
                 {
                     if(opcion == "g")
                         personajes.ElementAt(i).GenerarCaracteristicas();
-                    if(opcion == "c") 
+                    if(opcion == "r") 
                     {
-                        List<Personaje>? personajesGanadores;
-                        string? documentoGanadores = HelperJson.LeerJson("ganadores.json");
-                        if (documentoGanadores != null) {
-                            personajesGanadores = JsonSerializer.Deserialize<List<Personaje>>(documentoGanadores);
-                        } else {
-                            personajesGanadores = new List<Personaje>();
-                        }
-                        Personaje? cargado = MenuListarGanadores(personajesGanadores);
+                        Personaje? cargado = MenuListarGanadores(); //Muestra personajes guardados y carga elegido
                         if (cargado != null) 
                         {
                             if(!personajes.Contains(cargado)) /// equals modificado: compara sólo Nombres
@@ -187,17 +180,13 @@ internal class Program
                                 // var aux = personajes.ElementAt(i); //personajes[i] = cargado;
                                 // aux = cargado;                     ///Replace()?? mala práctica? Error?
                                 personajes[i] = cargado;
-                            } 
-                            else 
-                            {
+                            } else {
                                 if (personajes.ElementAt(i).Equals(cargado))
                                 {
                                     // var aux = personajes.ElementAt(i); 
                                     // aux = cargado;             
                                     personajes[i] = cargado;       
-                                } 
-                                else 
-                                {
+                                } else {
                                     Console.WriteLine("(no se puede cargar, ya existe un personaje con ese nombre)");
                                     Console.ReadKey();
                                 }
@@ -212,27 +201,27 @@ internal class Program
             } while (opcion != "l");
         }
 
-        Personaje? MenuListarGanadores(List<Personaje>? personajes)
+        Personaje? MenuListarGanadores()
         {
-            if(personajes!=null && personajes.Any()) 
+            string? documentoGanadores = HelperJson.LeerJson("ganadores.json");
+            if (documentoGanadores != null) 
             {
-                int i;
+                var personajesGanadores = JsonSerializer.Deserialize<List<Personaje>>(documentoGanadores);
                 string opcion = "";
                 do {
-                    i = 1;
-                    foreach (var persona in personajes) {
+                    int i = 1;
+                    foreach (var persona in personajesGanadores) 
+                    {
                         Console.Clear();
-                        Console.WriteLine((i++)+"/"+personajes.Count+" Carga un Personaje Ancestral:");
+                        Console.WriteLine((i++)+"/"+personajesGanadores.Count+" Carga un Personaje Ancestral:");
                         persona.MostrarDatos();
                         persona.MostrarCaracteristicas();
                         Console.WriteLine("\n(E)legir   (C)ancelar   (enter)-->");
                         opcion = Console.ReadLine().ToLower();
-                        if(opcion == "c") {
+                        if(opcion == "c") 
                             return null;
-                        }
-                        if(opcion == "e") {
+                        if(opcion == "e")
                             return persona;
-                        }
                     }
                 } while (opcion != "c");
             } else {
@@ -245,12 +234,13 @@ internal class Program
 
         /* PANTALLA SECUNDARIA: Mostrar lista de ganadores */
 
-        void MostrarGanadoresCsv(List<string[]>? personajes)
+        void MostrarGanadoresCsv()
         {
-            string nombre,fecha,stats;
             Console.Clear();
             Tipeo("\nLista de Vencedores Ancestrales:");
+            var personajes = HelperCsv.LeerCsv("ganadores.csv",',');
             if (personajes != null && personajes.Any()) {
+                string nombre,fecha,stats;
                 Console.WriteLine(String.Format("\n{0,12} {1,35} {2,25}\n", "Torneo", "Nombre","Stats[v/d/f/a]"));
                 foreach (var persona in personajes) {
                     if(persona == null)
