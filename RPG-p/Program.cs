@@ -10,9 +10,9 @@ internal class Program
         Console.Clear();
         int op;
         do {
-            Tipeo("¿Número de personajes? (2-4-6-8-10)");
+            Tipeo("¿Número de personajes? (Recomendable: 2, 4 u 8)");
             op = Convert.ToInt16(Console.ReadLine());
-        } while (op < 2 && op > 10);
+        } while (op < 2 && op > 8);
         N = op;
 
         List<Personaje> personajesEnJuego = GeneradorPersonajes();
@@ -180,14 +180,22 @@ internal class Program
                         Personaje? cargado = MenuListarGanadores(personajesGanadores);
                         if (cargado != null) 
                         {
-                            if(personajes.Contains(cargado)) /// equals modificado: compara sólo Nombres
+                            if(!personajes.Contains(cargado)) /// equals modificado: compara sólo Nombres
+                            {
+                                // var aux = personajes.ElementAt(i); //personajes[i] = cargado;
+                                // aux = cargado;                     ///Replace()?? mala práctica? Error?
+                                personajes[i] = cargado;
+                            } 
+                            else 
                             {
                                 if (personajes.ElementAt(i).Equals(cargado))
                                 {
-                                    var aux = personajes.ElementAt(i); //personajes[i] = cargado;
-                                    aux = cargado;                     ///Replace()?? mala práctica? Error?
-                                    personajesGanadores.Remove(cargado);
-                                } else {
+                                    // var aux = personajes.ElementAt(i); 
+                                    // aux = cargado;             
+                                    personajes[i] = cargado;       
+                                } 
+                                else 
+                                {
                                     Console.WriteLine("(no se puede cargar, ya existe un personaje con ese nombre)");
                                     Console.ReadKey();
                                 }
