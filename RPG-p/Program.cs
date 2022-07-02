@@ -180,15 +180,18 @@ internal class Program
                         Personaje? cargado = MenuListarGanadores(personajesGanadores);
                         if (cargado != null) 
                         {
-                            if(!personajes.Contains(cargado)) 
+                            if(personajes.Contains(cargado)) /// equals modificado: compara sólo Nombres
                             {
-                                var aux = personajes.ElementAt(i); //personajes[i] = cargado;
-                                aux = cargado;                     ///Replace()?? mala práctica? Error?
-                                personajesGanadores.Remove(cargado);
-                            } else {
-                                Console.WriteLine("(no se puede cargar, ya existe un personaje con ese nombre)");
-                                Console.ReadKey();
-                            }
+                                if (personajes.ElementAt(i).Equals(cargado))
+                                {
+                                    var aux = personajes.ElementAt(i); //personajes[i] = cargado;
+                                    aux = cargado;                     ///Replace()?? mala práctica? Error?
+                                    personajesGanadores.Remove(cargado);
+                                } else {
+                                    Console.WriteLine("(no se puede cargar, ya existe un personaje con ese nombre)");
+                                    Console.ReadKey();
+                                }
+                            } 
                         }  
                     }
                 } else {
@@ -273,7 +276,7 @@ internal class Program
             if (documentoGanadores != null) 
             { ///try catch?
                 personajesGanadores = JsonSerializer.Deserialize<List<Personaje>>(documentoGanadores);
-                if (!personajesGanadores.Contains(p)) /// equals modificado: compara sólo Nombres 
+                if (personajesGanadores.Contains(p))
                     personajesGanadores.Remove(p);
             } else {
                 personajesGanadores = new List<Personaje>();
