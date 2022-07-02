@@ -1,6 +1,6 @@
 public static class HelperCsv
 {
-    public static List<string[]> LeerCsv(string nombreArchivo, char caracter)
+    public static List<string[]>? LeerCsv(string nombreArchivo, char caracter)
     {
         var LecturaDelArchivo = new List<string[]>();
         if (File.Exists(nombreArchivo)) {
@@ -15,7 +15,7 @@ public static class HelperCsv
         }
         else {
             Console.WriteLine("Archivo no encontrado: {0}", nombreArchivo);
-            Console.ReadKey();
+            return null;
         }
         return LecturaDelArchivo;
     }

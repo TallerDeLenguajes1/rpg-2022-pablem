@@ -57,15 +57,15 @@ public class Personaje
     {
         string opcion;
         Console.WriteLine("\n¿Qué mejoras elijes para {0}?",Apodo);
-        Console.WriteLine("(S)alud+10   (F)uerza+1   (V)elocidad+1");
+        Console.WriteLine("(S)alud+20   (F)uerza+1   (V)elocidad+1");
         opcion = Console.ReadLine().ToLower();
         if(opcion == "f") {
-            Fuerza++;
+            Fuerza = (Fuerza < 10) ? Fuerza+1 : 11;
         } else {
             if(opcion == "v") {
-                Velocidad++;
+                Velocidad = (Velocidad < 10) ? Velocidad+1 : 11;
             } else {
-                Salud += 10;
+                Salud += 20;
                 if(Salud > 100)
                     Salud = 100;
             }
@@ -86,7 +86,7 @@ public class Personaje
 
     public void MostrarDatos()
     {
-        Console.WriteLine("\n"+Nombre);
+        Console.WriteLine("\n"+Nombre+"\n");
         Console.WriteLine("\tClase: "+Tipo);
         Console.WriteLine("\tFecha de Nacimiento: "+FechaNacimiento.ToString("dd/MM/yyyy"));
         Console.WriteLine("\tEdad: "+calcularEdad()+" años");
@@ -94,7 +94,7 @@ public class Personaje
     }
     public void MostrarCaracteristicas()
     {
-        Console.WriteLine("\nCaracterísticas de "+Apodo);
+        Console.WriteLine("\nCaracterísticas de "+Apodo+"\n");
         Console.WriteLine("\tNivel "+Nivel);
         Console.WriteLine("\tVelocidad: "+Velocidad);
         Console.WriteLine("\tDestreza: "+Destreza);
