@@ -61,7 +61,7 @@ Por cada partida se actualiza una lista de objetos tipo Personaje en el archivo 
 ### TP8 - Archivos Csv
 Se agrega un archivo "ganadores.csv" en el cual se irán guardando los ganadores de cada torneo. Los datos de cada personaje son: nombre, fecha del combate y características.
 
-Las líneas del archivo "nombres.csv" son combinaciones de nombres, apodos y tipos de personajes. Se usa el archivo generar los datos de cada personaje.
+Las líneas del archivo "nombres.csv" son combinaciones de nombres, apodos y tipos de personajes. Se usa el archivo para generar los datos de cada personaje.
 
 
 
