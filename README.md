@@ -38,7 +38,7 @@ Un personaje puede ser eliminado en cualquier momento si su salud llega a cero.
 
     **--> (G)enerar:** Permite modificar las características del peronaje visualizado de forma aleatoria.
 
-    **--> (R)eemplazar:** Permite intercambiar el personaje visualizado por un personaje guardado en la base de datos, **sólo si los perosnajes a intercambiar poseen el mismo nombre o si el personaje a cargar (nombre) no se encuentra en otra posición de la lista de personajes en juego.** Los nombres nunca se repiten.
+    **--> (R)eemplazar:** Permite intercambiar el personaje visualizado por un personaje guardado en la base de datos, **sólo si los perosnajes a intercambiar poseen el mismo nombre o si el personaje a cargar (nombre) no se encuentra en otra posición de la lista de personajes en juego.** Nunca se repiten los nombres de una misma lista.
 
 +   Menú Principal --> (T)orneo --> Mejoras
 
