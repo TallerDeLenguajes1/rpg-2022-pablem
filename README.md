@@ -38,7 +38,7 @@ Un personaje puede ser eliminado en cualquier momento si su salud llega a cero.
 
     **--> (G)enerar:** Permite modificar las características del peronaje visualizado de forma aleatoria.
 
-    **--> (R)eemplazar:** Permite intercambiar el personaje visualizado por un personaje guardado en la base de datos, **sólo si los perosnajes a intercambiar poseen el mismo nombre o si el personaje a cargar (nombre) no se encuentra en otra posición de la lista de personajes en juego**
+    **--> (R)eemplazar:** Permite intercambiar el personaje visualizado por un personaje guardado en la base de datos, **sólo si los perosnajes a intercambiar poseen el mismo nombre o si el personaje a cargar (nombre) no se encuentra en otra posición de la lista de personajes en juego.** Los nombres nunca se repiten.
 
 +   Menú Principal --> (T)orneo --> Mejoras
 
@@ -62,18 +62,3 @@ Por cada partida se actualiza una lista de objetos tipo Personaje en el archivo 
 Se agrega un archivo "ganadores.csv" en el cual se irán guardando los ganadores de cada torneo. Los datos de cada personaje son: nombre, fecha del combate y características.
 
 Las líneas del archivo "nombres.csv" son combinaciones de nombres, apodos y tipos de personajes. Se usa el archivo para generar los datos de cada personaje.
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-
