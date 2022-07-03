@@ -6,6 +6,8 @@ internal class Program
     private static void Main(string[] args)
     {
         /* INICIALIZACIÓN - Generación de personajes - Api web services */
+
+        /*Emojis*/
         Console.OutputEncoding = Encoding.UTF8;
         List<Emoji>? mono  = HelperAPI.CargarEmoji("monkey_face");
         List<Emoji>? insecto = HelperAPI.CargarEmoji("animal_bug");
@@ -23,7 +25,9 @@ internal class Program
         /* PANTALLA DE INICIO */
         string opcion;
         do {
+            /*Emojis*/
             var emoji = Emoji.Generar(insecto);
+            
             Console.Clear();
             Tipeo(emoji+" Bienvenido al Mundo Pintado de Ariamis "+emoji);
             Tipeo("\nLos participantes ya llegaron a la contienda:\n");
@@ -73,8 +77,10 @@ internal class Program
             Personaje p1;
             Personaje p2;
 
+            /*Emojis*/
             string lugar = Emoji.Generar(HelperAPI.CargarEmoji("travel_and_places"));
             lugar = "   "+lugar+"     "+lugar+"  "+lugar+"        "+lugar+"     "+lugar+lugar+lugar+"   "+lugar+"     "+lugar+"  "+lugar+"        "+lugar+"     "+lugar+lugar+"\n";
+            
             int ronda = 1;
 
             while (personajes.Count > 1) 
@@ -123,13 +129,12 @@ internal class Program
 
         Personaje Batalla(Personaje p1, Personaje p2)
         {
-            /* Cargado de emojis */
+            /*Emojis*/
             var bandera = HelperAPI.CargarEmoji("symbols");
             var sufre = HelperAPI.CargarEmoji("face_negative");
             var diablo = HelperAPI.CargarEmoji("creature_face");
             var gesto = HelperAPI.CargarEmoji("activities");
             var sonrie = HelperAPI.CargarEmoji("face_positive");
-            
             string ban1 = Emoji.Generar(bandera);
             string ban2 = Emoji.Generar(bandera);
 
