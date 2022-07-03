@@ -7,13 +7,15 @@ internal class Program
     {
         /* INICIALIZACIÓN - Generación de personajes - Api web services */
         Console.OutputEncoding = Encoding.UTF8;
+        var emojiMono  = HelperAPI.CargarEmoji("monkey_face");
+        var emojiBicho = HelperAPI.CargarEmoji("animal_bug");
 
         do {
             Console.Clear();
             Tipeo("Configuración inicial: ¿Número de personajes? (Recomendable: 2, 4 u 8)");
             try {
                 N = Convert.ToInt16(Console.ReadLine()); 
-            } catch (System.FormatException){}
+            } catch (FormatException){}
         } while (N < 2 || N > 8);
 
         List<Personaje> personajesEnJuego = GeneradorPersonajes();
@@ -21,11 +23,12 @@ internal class Program
         /* PANTALLA DE INICIO */
         string opcion;
         do {
+            var emoji = Emoji.Generar(emojiBicho);
             Console.Clear();
-            Tipeo("Bienvenido al Mundo Pintado de Ariamis "+Convert.ToString(char.ConvertFromUtf32(0x1F41C)));//U+1F41C
+            Tipeo(emoji+" Bienvenido al Mundo Pintado de Ariamis "+emoji);
             Tipeo("\nNuevos participantes llegaron a la contienda:\n");
             foreach(var persona in personajesEnJuego) {
-                Console.WriteLine("\t"+persona.Nombre);
+                Console.WriteLine("\t"+Emoji.Generar(emojiMono)+" "+persona.Nombre);
             }
             Tipeo("\n\nElije sus destinos...");
             Console.WriteLine("\n(T)orneo   Es(C)aramuza   (E)legidos   (V)encedores   (S)alir");
