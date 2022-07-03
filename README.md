@@ -52,6 +52,7 @@ Fuente: https://github.com/cheatsnake/emojihub
 Implementación de Emojis aleatorios (Dark Souls ahora es menos darks 😜).
 
 Se consume una API de emojis. Por cada pantalla se recupera una o más listas de emojis que corresponden a una categoría (simbolos, lugares, acciones, expresiones, etc). Según el mensaje que se muestre por pantalla, se elige de forma aleatoria un emoji dentro de una categoría.
+
 Al hacer esto, se evita la monotonía durante el proceso de batallas por turnos, y se incorpora ambientación (con emojis de lugares).
 
 ### TP9 - Archivos Json
