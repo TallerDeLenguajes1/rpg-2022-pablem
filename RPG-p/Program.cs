@@ -88,12 +88,11 @@ internal class Program
                 /* CABECERA RONDA x */
                 Console.Clear();
                 Console.WriteLine(lugar);
-                Tipeo("VUELTA "+ronda+++":");
                 Console.Write("\t");
                 foreach (var persona in personajes) {
                     Console.Write("_ "+persona.Apodo+" _ ");
                 }
-                Console.WriteLine();
+                Tipeo("\n\nCOMBATE "+ronda+++":");
                 p1 = personajes.First();
                 personajes.Remove(p1);
                 p2 = personajes.First();
