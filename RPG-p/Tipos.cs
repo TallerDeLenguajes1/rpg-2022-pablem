@@ -9,6 +9,6 @@ public enum Tipos
     Hechicero,
     Piromantico,
     Clerigo,
-    Marginado
-
+    Marginado,
+    Demonio
 };
