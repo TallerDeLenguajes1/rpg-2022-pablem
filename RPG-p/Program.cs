@@ -7,8 +7,8 @@ internal class Program
     {
         /* INICIALIZACIÓN - Generación de personajes - Api web services */
         Console.OutputEncoding = Encoding.UTF8;
-        var emojiMono  = HelperAPI.CargarEmoji("monkey_face");
-        var emojiBicho = HelperAPI.CargarEmoji("animal_bug");
+        List<Emoji>? mono  = HelperAPI.CargarEmoji("monkey_face");
+        List<Emoji>? insecto = HelperAPI.CargarEmoji("animal_bug");
 
         do {
             Console.Clear();
@@ -23,12 +23,12 @@ internal class Program
         /* PANTALLA DE INICIO */
         string opcion;
         do {
-            var emoji = Emoji.Generar(emojiBicho);
+            var emoji = Emoji.Generar(insecto);
             Console.Clear();
             Tipeo(emoji+" Bienvenido al Mundo Pintado de Ariamis "+emoji);
-            Tipeo("\nNuevos participantes llegaron a la contienda:\n");
+            Tipeo("\nLos participantes ya llegaron a la contienda:\n");
             foreach(var persona in personajesEnJuego) {
-                Console.WriteLine("\t"+Emoji.Generar(emojiMono)+" "+persona.Nombre);
+                Console.WriteLine("\t"+Emoji.Generar(mono)+" "+persona.Nombre);
             }
             Tipeo("\n\nElije sus destinos...");
             Console.WriteLine("\n(T)orneo   Es(C)aramuza   (E)legidos   (V)encedores   (S)alir");
@@ -72,12 +72,16 @@ internal class Program
 
             Personaje p1;
             Personaje p2;
+
+            string lugar = Emoji.Generar(HelperAPI.CargarEmoji("travel_and_places"));
+            lugar = "   "+lugar+"     "+lugar+"  "+lugar+"        "+lugar+"     "+lugar+lugar+lugar+"   "+lugar+"     "+lugar+"  "+lugar+"        "+lugar+"     "+lugar+lugar+"\n";
             int ronda = 1;
 
             while (personajes.Count > 1) 
             {
                 /* CABECERA RONDA x */
                 Console.Clear();
+                Console.WriteLine(lugar);
                 Tipeo("VUELTA "+ronda+++":");
                 Console.Write("\t");
                 foreach (var persona in personajes) {
@@ -101,9 +105,16 @@ internal class Program
             /* UNA VEZ GANADO EL TORNEO */
             GuardarGanadorCSV("ganadores.csv",personajes.First());
             GuardarGanadorJson("ganadores.json",personajes.First());
-            
-            Tipeo(personajes.First().Nombre+" resultó victorios@ en este torneo mortal\n");
-            Tipeo("Su nombre quedará inmortalizado en la lista de ganadores.");
+
+            /* End Game - Mensaje final */
+            var emocion = HelperAPI.CargarEmoji("emotion");
+            var sonrie = HelperAPI.CargarEmoji("face_positive");
+            Console.Clear();
+            Console.WriteLine(lugar);
+
+            Tipeo(personajes.First().Nombre+" resultó victorios"+Emoji.Generar(emocion)+" en este torneo mortal "+Emoji.Generar(sonrie)+"\n");
+            Tipeo("Su nombre quedará inmortalizado en la lista de ganadores "+Emoji.Generar(sonrie)+Emoji.Generar(sonrie)+Emoji.Generar(sonrie)+"\n\n\n");
+            Tipeo(Emoji.Generar(emocion)+"\t"+Emoji.Generar(sonrie)+"\t"+Emoji.Generar(emocion)+"\t"+Emoji.Generar(sonrie)+"\t"+Emoji.Generar(emocion)+"\t"+Emoji.Generar(emocion)+Emoji.Generar(sonrie)+"\t"+Emoji.Generar(emocion)+"\t"+Emoji.Generar(sonrie)+"\t"+Emoji.Generar(emocion)+Emoji.Generar(emocion));
             personajesEnJuego = GeneradorPersonajes();
             Console.ReadKey();
         }
@@ -112,6 +123,16 @@ internal class Program
 
         Personaje Batalla(Personaje p1, Personaje p2)
         {
+            /* Cargado de emojis */
+            var bandera = HelperAPI.CargarEmoji("symbols");
+            var sufre = HelperAPI.CargarEmoji("face_negative");
+            var diablo = HelperAPI.CargarEmoji("creature_face");
+            var gesto = HelperAPI.CargarEmoji("activities");
+            var sonrie = HelperAPI.CargarEmoji("face_positive");
+            
+            string ban1 = Emoji.Generar(bandera);
+            string ban2 = Emoji.Generar(bandera);
+
             Personaje auxAtq; //Personaje p1 o p2 en su turno de atacar
             Personaje auxDef; //Personaje p1 o p2 en su turno de defender
             int max = 5000;
@@ -136,19 +157,19 @@ internal class Program
                     danio = 100 * (ataque - auxDef.PoderDefensa()) / max;
                     if (danio < 0)
                         danio = 0;
-                    Console.WriteLine(p1.Nombre + " (" + p1.Salud + ")   Vs.   (" + p2.Salud + ") " + p2.Nombre);
-                    Tipeo(auxAtq.Apodo + " ataca con efectividad +" + ataque); //FrasesAtq(ataque) FrasesDef(danio) 
-                    Tipeo(auxDef.Apodo + " recibió " + danio + " puntos de daño\n");
+                    Console.WriteLine($"{ban1} {p1.Nombre} ({p1.Salud}) {ban1}   Vs.   {ban2} ({p2.Salud}) {p2.Nombre} {ban2}");
+                    Tipeo("\t"+auxAtq.Apodo + " ataca "+Emoji.Generar(gesto)+" con efectividad +"+ataque+Emoji.Generar(sonrie)); //FrasesAtq(ataque) FrasesDef(danio) 
+                    Tipeo("\t"+auxDef.Apodo + " recibió " + danio + " puntos de daño "+Emoji.Generar(sufre)+"\n");
                     auxDef.Salud -= danio;
                 }
             }
             if (p1.Salud<p2.Salud) {
-                Tipeo("\n"+p1.Nombre+" quedó eliminad@ de esta contienda");
+                Tipeo("\n"+p1.Nombre+" quedó eliminad@ de esta contienda "+Emoji.Generar(diablo));
                 p1.Salud = 100;
                 Console.ReadKey();
                 return p2;
             } else {
-                Tipeo("\n"+p2.Nombre+" está fuera de combate");
+                Tipeo("\n"+p2.Nombre+" está fuera de combate "+Emoji.Generar(diablo));
                 p2.Salud = 100;
                 Console.ReadKey();
                 return p1;
