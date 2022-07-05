@@ -7,7 +7,7 @@ public static class HelperAPI
     
     public static List<Emoji>? CargarEmoji(string grupo)
     {
-         var url = $"https://emojihub.herokuapp.com/api/all/group_{grupo}";
+        var url = $"https://emojihub.herokuapp.com/api/all/group_{grupo}";
         var request = (HttpWebRequest)WebRequest.Create(url);
         request.Method = "GET";
         request.ContentType = "application/json";

@@ -21,7 +21,7 @@ internal class Program
         /* LISTA GLOBAL Personajes en Juego */
         do {
             Console.Clear();
-            Tipeo("Configuración inicial: ¿Número de personajes? (Recomendable: 2, 4 u 8)");
+            Console.WriteLine("Configuración inicial: ¿Número de personajes? (Recomendable: 2, 4 u 8)");
             try {
                 N = Convert.ToInt16(Console.ReadLine()); 
             } catch (FormatException){}
@@ -325,7 +325,7 @@ internal class Program
             foreach (var c in texto)
             {
                 Console.Write(c);
-                Thread.Sleep(20);///20ms
+                Thread.Sleep(15);///20ms
             }
             Console.WriteLine();
         }
