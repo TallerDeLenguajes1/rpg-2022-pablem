@@ -271,14 +271,14 @@ internal class Program
             var personajes = HelperCsv.LeerCsv("ganadores.csv",',');
             if (personajes != null && personajes.Any()) {
                 string nombre,fecha,stats;
-                Console.WriteLine(String.Format("\n{0,12} {1,35} {2,25}\n", "Torneo", "Nombre","Stats[v/d/f/a]"));
+                Console.WriteLine(String.Format("\n{0,-15} {1,-35} {2,-15}\n", "Torneo", "Nombre","Stats[v/d/f/a]"));
                 foreach (var persona in personajes) {
                     if(persona == null)
                         break;
                     fecha = persona[0];
                     nombre = persona[1];
                     stats = persona[2];
-                    Console.WriteLine(String.Format("{0,12} {1,35} {2,25}",fecha,nombre,stats));
+                    Console.WriteLine(String.Format("{0,-15} {1,-35} {2,-15}",fecha,nombre,stats));
                 }
             } else {
                 Tipeo("\n(no hubo ningún ganador)");
