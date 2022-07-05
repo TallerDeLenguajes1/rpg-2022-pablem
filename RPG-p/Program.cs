@@ -153,7 +153,7 @@ internal class Program
                 if (p1.Salud > 0 && p2.Salud > 0) 
                 {
                     if(i%2==0) {
-                        Tipeo("\nRound " + ronda+++":\n");
+                        Tipeo($"\nRound {ronda++}:\n");
                         auxAtq = p1;
                         auxDef = p2;
                         Console.ReadKey();
