@@ -2,16 +2,23 @@
 using System.Text.Json;
 internal class Program
 {
-    public static int N = 4; //Número de personajes para el torneo
     private static void Main(string[] args)
     {
-        /* INICIALIZACIÓN - Generación de personajes - Api web services */
-
-        /*Emojis*/
         Console.OutputEncoding = Encoding.UTF8;
-        List<Emoji>? mono  = HelperAPI.CargarEmoji("monkey_face");
-        List<Emoji>? insecto = HelperAPI.CargarEmoji("animal_bug");
 
+        /* VARIABLES GLOBALES - Api web services: EMOJIS */
+        int N = 4; //Número de personajes para el torneo
+        var insectos = HelperAPI.CargarEmoji("animal_bug");
+        var monos = HelperAPI.CargarEmoji("monkey_face");
+        var lugares = HelperAPI.CargarEmoji("travel_and_places");
+        var corazones = HelperAPI.CargarEmoji("emotion");
+        var alegria = HelperAPI.CargarEmoji("face_positive");
+        var dolor = HelperAPI.CargarEmoji("face_negative");
+        var banderas = HelperAPI.CargarEmoji("symbols");
+        var seres = HelperAPI.CargarEmoji("creature_face");
+        var gestos = HelperAPI.CargarEmoji("body");
+        
+        /* LISTA GLOBAL Personajes en Juego */
         do {
             Console.Clear();
             Tipeo("Configuración inicial: ¿Número de personajes? (Recomendable: 2, 4 u 8)");
@@ -22,41 +29,43 @@ internal class Program
 
         List<Personaje> personajesEnJuego = GeneradorPersonajes();
 
-        /* PANTALLA DE INICIO */
+        /* Mensaje de bienvenida y MENÚ DE INICIO */
+
         string opcion;
         do {
-            /*Emojis*/
-            var emoji = Emoji.Generar(insecto);
-            
+            var insecto = Emoji.Generar(insectos);
             Console.Clear();
-            Tipeo(emoji+" Bienvenido al Mundo Pintado de Ariamis "+emoji);
+            Tipeo(insecto+"Bienvenido al Mundo Pintado de Ariamis"+insecto);
             Tipeo("\nLos participantes ya llegaron a la contienda:\n");
             foreach(var persona in personajesEnJuego) {
-                Console.WriteLine("\t"+Emoji.Generar(mono)+" "+persona.Nombre);
+                Console.WriteLine("\t"+Emoji.Generar(monos)+persona.Nombre);
             }
             Tipeo("\n\nElije sus destinos...");
             Console.WriteLine("\n(T)orneo   Es(C)aramuza   (E)legidos   (V)encedores   (S)alir");
 
             opcion = Console.ReadLine().ToLower();
             if (opcion == "t")
-                Torneo(personajesEnJuego);
-            if (opcion == "c")
+                Torneo();
+            if (opcion == "c") {
+                Console.Clear();
                 Batalla(personajesEnJuego.First(),personajesEnJuego.Last());
+                personajesEnJuego.First().Salud=100;
+                personajesEnJuego.Last().Salud=100;
+            }
             if (opcion == "e")
-                MenuListarPersonajes(personajesEnJuego);
+                MenuListarPersonajes();
             if (opcion == "v")
                 MostrarGanadoresCsv();
         } while (opcion != "s");
 
 
-        /* INICIALIZACIÓN */
+        /* CREACIÓN DE PERSONAJES RANDOM */
 
         List<Personaje> GeneradorPersonajes()
         {
             /* Lee combinaciones Nombre-Apodo-Tipo desde archivo: "nombres.csv" */
             List<string[]>? ListaNombreApodoTipo = HelperCsv.LeerCsv("nombres.csv",',');
-           
-            /* CREACIÓN DE PERSONAJES RANDOM */
+
             var personajesENJuego = new List<Personaje>();
             Personaje nuevo;
             for (int i = 0; i < N; i++) {
@@ -70,33 +79,33 @@ internal class Program
 
         /* PANTALLAS SECUNDARIAS: Torneo */
 
-        void Torneo(List<Personaje> personajes)
+        void Torneo()
         {
-            MenuListarPersonajes(personajesEnJuego);
+            /* Antes del torneo se vuelven a mostrar personajes: datos y características */
+            MenuListarPersonajes();
 
             Personaje p1;
             Personaje p2;
 
             /*Emojis*/
-            string lugar = Emoji.Generar(HelperAPI.CargarEmoji("travel_and_places"));
-            lugar = "   "+lugar+"     "+lugar+"  "+lugar+"        "+lugar+"     "+lugar+lugar+lugar+"   "+lugar+"     "+lugar+"  "+lugar+"        "+lugar+"     "+lugar+lugar+"\n";
-            
-            int ronda = 1;
+            string l = Emoji.Generar(lugares);
+            l = "   "+l+"     "+l+"  "+l+"        "+l+"     "+l+l+l+"   "+l+"     "+l+"  "+l+"        "+l+"     "+l+l+"\n";
 
-            while (personajes.Count > 1) 
+            int ronda = 1;
+            while (personajesEnJuego.Count > 1) 
             {
                 /* CABECERA RONDA x */
                 Console.Clear();
-                Console.WriteLine(lugar);
+                Console.WriteLine(l);
                 Console.Write("\t");
-                foreach (var persona in personajes) {
+                foreach (var persona in personajesEnJuego) {
                     Console.Write("_ "+persona.Apodo+" _ ");
                 }
-                Tipeo("\n\nCOMBATE "+ronda+++":");
-                p1 = personajes.First();
-                personajes.Remove(p1);
-                p2 = personajes.First();
-                personajes.Remove(p2);
+                Tipeo($"\n\nCOMBATE {ronda++}:");
+                p1 = personajesEnJuego.First();
+                personajesEnJuego.Remove(p1);
+                p2 = personajesEnJuego.First();
+                personajesEnJuego.Remove(p2);
 
                 /* FUNCION COMBATE SIMPLE */
                 p1 = Batalla(p1,p2);
@@ -104,38 +113,33 @@ internal class Program
                 /* UNA VEZ GANADO EL COMBATE */
                 p1.MostrarCaracteristicas();
                 p1.Levelear();
-                personajes.Add(p1);
+                personajesEnJuego.Add(p1);
             }
 
             /* UNA VEZ GANADO EL TORNEO */
-            GuardarGanadorCSV("ganadores.csv",personajes.First());
-            GuardarGanadorJson("ganadores.json",personajes.First());
+            personajesEnJuego.First().Salud=100;
+            GuardarGanadorCSV("ganadores.csv",personajesEnJuego.First());
+            GuardarGanadorJson("ganadores.json",personajesEnJuego.First());
 
-            /* End Game - Mensaje final */
-            var emocion = HelperAPI.CargarEmoji("emotion");
-            var sonrie = HelperAPI.CargarEmoji("face_positive");
+            /* END GAME - Mensaje final */
             Console.Clear();
-            Console.WriteLine(lugar);
-
-            Tipeo(personajes.First().Nombre+" resultó victorios"+Emoji.Generar(emocion)+" en este torneo mortal "+Emoji.Generar(sonrie)+"\n");
-            Tipeo("Su nombre quedará inmortalizado en la lista de ganadores "+Emoji.Generar(sonrie)+Emoji.Generar(sonrie)+Emoji.Generar(sonrie)+"\n\n\n");
-            Tipeo(Emoji.Generar(emocion)+"\t"+Emoji.Generar(sonrie)+"\t"+Emoji.Generar(emocion)+"\t"+Emoji.Generar(sonrie)+"\t"+Emoji.Generar(emocion)+"\t"+Emoji.Generar(emocion)+Emoji.Generar(sonrie)+"\t"+Emoji.Generar(emocion)+"\t"+Emoji.Generar(sonrie)+"\t"+Emoji.Generar(emocion)+Emoji.Generar(emocion));
+            Console.WriteLine(l);
+            Tipeo(personajesEnJuego.First().Nombre+" resultó victorios"+Emoji.Generar(corazones)+"en este torneo mortal"+Emoji.Generar(alegria)+"\n");
+            Tipeo("Su nombre quedará inmortalizado en la lista de ganadores"+Emoji.Generar(alegria)+Emoji.Generar(alegria)+Emoji.Generar(alegria)+"\n\n\n");
+            Tipeo(Emoji.Generar(corazones)+"\t"+Emoji.Generar(alegria)+"\t"+Emoji.Generar(corazones)+"\t"+Emoji.Generar(alegria)+"\t"+Emoji.Generar(corazones)+"\t"+Emoji.Generar(corazones)+Emoji.Generar(alegria)+"\t"+Emoji.Generar(corazones)+"\t"+Emoji.Generar(alegria)+"\t"+Emoji.Generar(corazones)+Emoji.Generar(corazones));
+            
+            /* GENERACIÓN DE NUEVOS PERSONAJES */
             personajesEnJuego = GeneradorPersonajes();
             Console.ReadKey();
         }
 
-        /* PANTALLA SECUNDARIA: batalla Singular */
+        /* PANTALLA SECUNDARIA: Batalla Singular */
 
         Personaje Batalla(Personaje p1, Personaje p2)
         {
             /*Emojis*/
-            var bandera = HelperAPI.CargarEmoji("symbols");
-            var sufre = HelperAPI.CargarEmoji("face_negative");
-            var diablo = HelperAPI.CargarEmoji("creature_face");
-            var gesto = HelperAPI.CargarEmoji("activities");
-            var sonrie = HelperAPI.CargarEmoji("face_positive");
-            string ban1 = Emoji.Generar(bandera);
-            string ban2 = Emoji.Generar(bandera);
+            string ban1 = Emoji.Generar(banderas);
+            string ban2 = Emoji.Generar(banderas);
 
             Personaje auxAtq; //Personaje p1 o p2 en su turno de atacar
             Personaje auxDef; //Personaje p1 o p2 en su turno de defender
@@ -161,59 +165,57 @@ internal class Program
                     danio = 100 * (ataque - auxDef.PoderDefensa()) / max;
                     if (danio < 0)
                         danio = 0;
-                    Console.WriteLine($"{ban1} {p1.Nombre} ({p1.Salud}) {ban1}   Vs.   {ban2} ({p2.Salud}) {p2.Nombre} {ban2}");
-                    Tipeo("\t"+auxAtq.Apodo + " ataca "+Emoji.Generar(gesto)+" con efectividad +"+ataque+Emoji.Generar(sonrie)); //FrasesAtq(ataque) FrasesDef(danio) 
-                    Tipeo("\t"+auxDef.Apodo + " recibió " + danio + " puntos de daño "+Emoji.Generar(sufre)+"\n");
+                    Console.WriteLine($"{ban1+p1.Nombre} ({p1.Salud}){ban1}  Vs.  {ban2}({p2.Salud}) {p2.Nombre+ban2}");
+                    Tipeo("\t"+auxAtq.Apodo + " ataca"+Emoji.Generar(gestos)+"con efectividad +"+ataque+Emoji.Generar(alegria)); //FrasesAtq(ataque) FrasesDef(danio) 
+                    Tipeo("\t"+auxDef.Apodo + " recibió " + danio + " puntos de daño"+Emoji.Generar(dolor)+"\n");
                     auxDef.Salud -= danio;
                 }
             }
             if (p1.Salud<p2.Salud) {
-                Tipeo("\n"+p1.Nombre+" quedó eliminad@ de esta contienda "+Emoji.Generar(diablo));
-                p1.Salud = 100;
+                Tipeo("\n"+p1.Nombre+" quedó eliminad@ de esta contienda"+Emoji.Generar(seres));
                 Console.ReadKey();
                 return p2;
             } else {
-                Tipeo("\n"+p2.Nombre+" está fuera de combate "+Emoji.Generar(diablo));
-                p2.Salud = 100;
+                Tipeo("\n"+p2.Nombre+" está fuera de combate"+Emoji.Generar(seres));
                 Console.ReadKey();
                 return p1;
             }
         }
 
-        /* PANTALLA SECUNDARIA: Menu: Muestra y Modifica personajes en juego   */
+        /* PANTALLA SECUNDARIA: Menu: Muestra y Modifica personajes en juego */
 
-        void MenuListarPersonajes(List<Personaje> personajes)
+        void MenuListarPersonajes()
         {
             var opcion = "";
             var i = 0;
             do {
                 Console.Clear();
-                Console.WriteLine((i+1)+"/"+personajes.Count+" Personajes en Juego:");
-                personajes.ElementAt(i).MostrarDatos(); //indexOf?
-                personajes.ElementAt(i).MostrarCaracteristicas();
+                Console.WriteLine((i+1)+"/"+personajesEnJuego.Count+" Personajes en Juego:");
+                personajesEnJuego.ElementAt(i).MostrarDatos(); //indexOf?
+                personajesEnJuego.ElementAt(i).MostrarCaracteristicas();
                 Console.WriteLine("\n(G)enerar   (R)eemplazar   (L)isto   (enter)-->");
 
                 opcion = Console.ReadLine().ToLower();
                 if(opcion == "g" || opcion == "r") 
                 {
                     if(opcion == "g")
-                        personajes.ElementAt(i).GenerarCaracteristicas();
+                        personajesEnJuego.ElementAt(i).GenerarCaracteristicas();
                     if(opcion == "r") 
                     {
                         Personaje? cargado = MenuListarGanadores(); //Muestra personajes guardados y carga elegido
                         if (cargado != null) 
                         {
-                            if(!personajes.Contains(cargado)) /// equals modificado: compara sólo Nombres
+                            if(!personajesEnJuego.Contains(cargado)) /// equals modificado: compara sólo Nombres
                             {
-                                // var aux = personajes.ElementAt(i); //personajes[i] = cargado;
-                                // aux = cargado;                     ///Replace()?? mala práctica? Error?
-                                personajes[i] = cargado;
+                                // var aux = personajes.ElementAt(i); 
+                                // aux = cargado;                     
+                                personajesEnJuego[i] = cargado;
                             } else {
-                                if (personajes.ElementAt(i).Equals(cargado))
+                                if (personajesEnJuego.ElementAt(i).Equals(cargado))
                                 {
                                     // var aux = personajes.ElementAt(i); 
                                     // aux = cargado;             
-                                    personajes[i] = cargado;       
+                                    personajesEnJuego[i] = cargado;       
                                 } else {
                                     Console.WriteLine("(no se puede cargar, ya existe un personaje con ese nombre)");
                                     Console.ReadKey();
@@ -224,11 +226,11 @@ internal class Program
                 } else {
                     i++;
                 }
-                if(i==personajes.Count)
+                if(i==personajesEnJuego.Count)
                     i=0;
             } while (opcion != "l");
         }
-
+        /* PANTALLA SECUNDARIA (AUXILIAR): Menu Personajes Ganadores, devuelve un elegido */
         Personaje? MenuListarGanadores()
         {
             string? documentoGanadores = HelperJson.LeerJson("ganadores.json");
@@ -260,7 +262,7 @@ internal class Program
             return null;
         }
 
-        /* PANTALLA SECUNDARIA: Mostrar lista de ganadores */
+        /* PANTALLA SECUNDARIA: Mostrar historial de ganadores */
 
         void MostrarGanadoresCsv()
         {

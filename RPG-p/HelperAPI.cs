@@ -3,11 +3,11 @@ using System.Text.Json;
 
 public static class HelperAPI
 {
-    /* Se recupera una lista de Emojis de acurdo al grupo o categoría solicitada */
+    /* Se recupera una lista de Emojis de acuerdo al grupo o categoría solicitada */
     
     public static List<Emoji>? CargarEmoji(string grupo)
     {
-        var url = $"https://emojihub.herokuapp.com/api/all/group_{grupo}";
+         var url = $"https://emojihub.herokuapp.com/api/all/group_{grupo}";
         var request = (HttpWebRequest)WebRequest.Create(url);
         request.Method = "GET";
         request.ContentType = "application/json";
